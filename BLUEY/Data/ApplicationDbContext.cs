@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace BLUEY.Data
@@ -9,5 +10,7 @@ namespace BLUEY.Data
             : base(options)
         {
         }
+
+        DbSet<IdentityUser> Users {  get; set; }
     }
 }

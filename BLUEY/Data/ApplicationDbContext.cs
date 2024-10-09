@@ -11,6 +11,6 @@ namespace BLUEY.Data
         {
         }
 
-        DbSet<IdentityUser> Users {  get; set; }
+        //DbSet<IdentityUser> Users {  get; set; }
     }
 }

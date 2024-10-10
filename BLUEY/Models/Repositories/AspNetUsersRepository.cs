@@ -40,12 +40,15 @@ namespace BLUEY.Models.Repositories
 
         public bool Update(Users user)
         {
-            throw new NotImplementedException();
+            var sql = "UPDATE bluedb.aspnetusers SET UserName=@UserName , NormalizedUserName=@NormalizedUserName, Email=@Email, NormalizedEmail=@NormalizedEmail, EmailConfirmed=@EmailConfirmed, PasswordHash=@PasswordHash, SecurityStamp=@SecurityStamp, ConcurrencyStamp=@ConcurrencyStamp, PhoneNumber=@PhoneNumber, PhoneNumberConfirmed=0, TwoFactorEnabled=0, LockoutEnd=NULL, LockoutEnabled=0, AccessFailedCount=0 WHERE Id= @Id;";
+            _connection.Execute(sql, user);
+            return false;
         }
 
         public bool Delet(Users user)
         {
-            throw new NotImplementedException();
+            _connection.Execute("delete from bluedb.aspnetusers where Id = @Id", new {Id = user.Id });
+            return false;
         }
 
     }

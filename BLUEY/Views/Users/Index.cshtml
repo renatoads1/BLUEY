@@ -1,22 +1,27 @@
-﻿@model List<BLUEY.Models.Users>
+﻿@using BLUEY.Models.ViewModels
+@model List<UserRoleViewModel>
 
 <h2>Lista de Usuários</h2>
 
 <table class="table">
     <thead>
         <tr>
-            <th>Username</th>
+            <th>User ID</th>
+            <th>User Name</th>
             <th>Email</th>
-            <th>Phone Number</th>
+            <th>Role ID</th>
+            <th>Role Name</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var user in Model)
         {
             <tr>
+                <td>@user.UserId</td>
                 <td>@user.UserName</td>
                 <td>@user.Email</td>
-                <td>@user.PhoneNumber</td>
+                <td>@user.RoleId</td>
+                <td>@user.RoleName</td>
             </tr>
         }
     </tbody>

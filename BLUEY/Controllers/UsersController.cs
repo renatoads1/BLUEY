@@ -1,6 +1,8 @@
 ﻿using BLUEY.Models;
 using BLUEY.Models.Repositories;
+using BLUEY.Models.ViewModels;
 using Humanizer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
@@ -9,6 +11,7 @@ using System.Security;
 namespace BLUEY.Controllers
 {
     [Route("[controller]")]
+    [Authorize(Policy = "AdminPolicy")]
     public class UsersController : Controller
     {
         private readonly IAspNetUsersRepository _usersRepository;
@@ -19,14 +22,22 @@ namespace BLUEY.Controllers
         }
         public IActionResult Index()
         {
-            var users = _usersRepository.GetAll();
-            return View(users);
+            //se o usuário for admin é impressa a lista de users
+            var isAdmin = User.HasClaim(c => c.Type == "IsAdmin" && c.Value == "true");
+            if (isAdmin)
+            {
+                //var users = _usersRepository.GetAll();
+                var users = _usersRepository.GetUserRoles();
+                return View(users);
+            }
+            return View();
         }
 
         [HttpGet("details/{id}")]
         public IActionResult Details(string id)
         {
             var user = _usersRepository.Get(id);
+            //var user = _usersRepository.GetUserRoles();
             List<Users> Usuarios = new List<Users>();
             Usuarios.Add(user);
             return View("Index", Usuarios);

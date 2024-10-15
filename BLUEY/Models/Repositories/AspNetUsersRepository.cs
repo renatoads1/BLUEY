@@ -1,53 +1,77 @@
-﻿
+﻿using BLUEY.Models.ViewModels;
 using Dapper;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
-using MySql.Data.MySqlClient;
-using Mysqlx.Crud;
-using System.Collections.Generic;
+using MySqlX.XDevAPI.Common;
 using System.Data;
-using System.Security;
 
 namespace BLUEY.Models.Repositories
 {
-    public class AspNetUsersRepository : IAspNetUsersRepository
+    public class AspNetUsersRepository : BaseRepository, IAspNetUsersRepository
     {
-
-        private IDbConnection _connection;
-
-        public AspNetUsersRepository()
+        public AspNetUsersRepository(IConfiguration configuration) : base(configuration)
         {
-            _connection = new MySqlConnection(@"Server=localhost;Port=3306;Database=BlueDB;User=root;Password=r3n4t0321;");
         }
 
         public List<Users> GetAll()
         {
-            return _connection.Query<Users>("select * from bluedb.aspnetusers;").ToList();
+            return _conMariaDb.Query<Users>("select * from bluedb.aspnetusers;").ToList();
         }
 
         public Users Get(string id)
         {
-            return _connection.QueryFirstOrDefault<Users>("select * from bluedb.aspnetusers where Id = @Id;", new {Id = id });
+            return _conMariaDb.QueryFirstOrDefault<Users>("select * from bluedb.aspnetusers where Id = @Id;", new {Id = id });
         }
+
+        public List<UserRoleViewModel> GetUserRoles()
+        {
+            string sql = @"SELECT u.Id AS UserId, 
+               u.UserName, 
+               u.Email, 
+               r.Id AS RoleId, 
+               r.Name AS RoleName 
+               FROM bluedb.aspnetusers AS u
+               LEFT JOIN bluedb.aspnetuserroles AS a ON a.UserId = u.Id
+               LEFT JOIN bluedb.aspnetroles AS r ON r.Id = a.RoleId;";
+
+            return _conMariaDb.Query<Users, Roles, UserRoleViewModel>(
+                sql,
+                (user, role) =>
+                {
+                    return new UserRoleViewModel
+                    {
+                        UserId = user.Id,
+                        UserName = user.UserName,
+                        Email = user.Email,
+                        RoleId = role.Id,
+                        RoleName = role.Name
+                    };
+                },
+                splitOn: "RoleId" // Indica ao Dapper onde começar a mapear a entidade `Roles`
+            ).ToList();
+
+
+
+        }
+
+
         public Users Set(Users user)
         {
             string sql = @"INSERT INTO bluedb.aspnetusers (Id, UserName, NormalizedUserName, Email, NormalizedEmail, EmailConfirmed, PasswordHash, SecurityStamp, ConcurrencyStamp, PhoneNumber, PhoneNumberConfirmed, TwoFactorEnabled, LockoutEnd, LockoutEnabled, AccessFailedCount) 
             VALUES(@Id, @UserName, @NormalizedUserName, @Email, @NormalizedEmail, @EmailConfirmed, @PasswordHash, @SecurityStamp, @ConcurrencyStamp, @PhoneNumber, @PhoneNumberConfirmed, @TwoFactorEnabled, @LockoutEnd, @LockoutEnabled, @AccessFailedCount)";
-            
-            _connection.Query(sql, user);
+
+            _conMariaDb.Query(sql, user);
             return user;
         }
 
         public bool Update(Users user)
         {
             var sql = "UPDATE bluedb.aspnetusers SET UserName=@UserName , NormalizedUserName=@NormalizedUserName, Email=@Email, NormalizedEmail=@NormalizedEmail, EmailConfirmed=@EmailConfirmed, PasswordHash=@PasswordHash, SecurityStamp=@SecurityStamp, ConcurrencyStamp=@ConcurrencyStamp, PhoneNumber=@PhoneNumber, PhoneNumberConfirmed=0, TwoFactorEnabled=0, LockoutEnd=NULL, LockoutEnabled=0, AccessFailedCount=0 WHERE Id= @Id;";
-            _connection.Execute(sql, user);
+            _conMariaDb.Execute(sql, user);
             return false;
         }
 
         public bool Delet(Users user)
         {
-            _connection.Execute("delete from bluedb.aspnetusers where Id = @Id", new {Id = user.Id });
+            _conMariaDb.Execute("delete from bluedb.aspnetusers where Id = @Id", new {Id = user.Id });
             return false;
         }
 

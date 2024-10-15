@@ -1,0 +1,10 @@
+﻿@model Microsoft.AspNetCore.Identity.IdentityRole
+
+<h1>Excluir Role</h1>
+<p>Você tem certeza de que deseja excluir o role <strong>@Model.Name</strong>?</p>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Excluir</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

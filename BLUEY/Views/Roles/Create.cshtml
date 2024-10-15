@@ -1,0 +1,11 @@
+﻿@model string
+<h1>Criar Novo Role</h1>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label for="roleName">Nome do Role</label>
+        <input type="text" class="form-control" id="roleName" name="roleName" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Salvar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

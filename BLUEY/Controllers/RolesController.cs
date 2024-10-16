@@ -9,12 +9,11 @@ namespace BLUEY.Controllers
     public class RolesController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly IAspNetRolesRepository _rolesRepository;
 
-        public RolesController(RoleManager<IdentityRole> roleManager, IAspNetRolesRepository rolesRepository)
+        public RolesController(RoleManager<IdentityRole> roleManager)
         {
             _roleManager = roleManager;
-            _rolesRepository = rolesRepository;
+
         }
 
 

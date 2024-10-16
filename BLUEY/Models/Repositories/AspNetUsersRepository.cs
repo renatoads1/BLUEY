@@ -23,18 +23,14 @@ namespace BLUEY.Models.Repositories
 
         public List<UserRoleViewModel> GetUserRoles()
         {
-            string sql = @"SELECT u.Id AS UserId, 
-               u.UserName, 
-               u.Email, 
-               r.Id AS RoleId, 
-               r.Name AS RoleName 
-               FROM bluedb.aspnetusers AS u
-               LEFT JOIN bluedb.aspnetuserroles AS a ON a.UserId = u.Id
-               LEFT JOIN bluedb.aspnetroles AS r ON r.Id = a.RoleId;";
+            string sql = @"SELECT *
+               FROM BlueDB.AspNetUsers AS u
+               LEFT JOIN BlueDB.AspNetUserRoles AS a ON a.UserId = u.Id
+               LEFT JOIN BlueDB.AspNetRoles AS r ON r.Id = a.RoleId;";
 
-            return _conMariaDb.Query<Users, Roles, UserRoleViewModel>(
+            return _conMariaDb.Query<Users, Userroles, Roles, UserRoleViewModel>(
                 sql,
-                (user, role) =>
+                (user, userroles,role) =>
                 {
                     return new UserRoleViewModel
                     {
@@ -45,7 +41,7 @@ namespace BLUEY.Models.Repositories
                         RoleName = role.Name
                     };
                 },
-                splitOn: "RoleId" // Indica ao Dapper onde começar a mapear a entidade `Roles`
+                splitOn: "UserId,RoleId" // Indica ao Dapper onde começar a mapear a entidade `Roles`
             ).ToList();
 
 

@@ -20,6 +20,7 @@ namespace BLUEY.Controllers
         {
             _usersRepository = usersRepository;
         }
+        
         public IActionResult Index()
         {
             //se o usuário for admin é impressa a lista de users

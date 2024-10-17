@@ -5,19 +5,22 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BLUEY.Controllers
 {
-    [Authorize(Policy = "AdminPolicy")] 
+    [Authorize(Policy = "AdminPolicy")]
     public class RolesController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly IAspnetUserRolesRepository _aspnetUserRolesRepository;
 
-        public RolesController(RoleManager<IdentityRole> roleManager)
+        public RolesController(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager, IAspnetUserRolesRepository aspnetUserRolesRepository)
         {
             _roleManager = roleManager;
-
+            _userManager = userManager;
+            _aspnetUserRolesRepository = aspnetUserRolesRepository;
         }
 
-
         // Método para listar todos os roles
+        
         public async Task<IActionResult> Index()
         {
             var roles = _roleManager.Roles;
@@ -28,6 +31,23 @@ namespace BLUEY.Controllers
         public IActionResult Create()
         {
             return View();
+        }
+        public IActionResult AddRegraUser() 
+        {
+            var usuarios = _userManager.Users; // Obter a lista de usuários
+            ViewBag.Usuarios = usuarios; // Passa a lista de usuários usando ViewBag
+            var regras = _roleManager.Roles.ToList();
+            return View(regras);
+        }
+
+        [HttpPost]
+        public IActionResult UpdateRoleUser(string userId, string roleId)
+        {
+            var user = userId;
+            var role = roleId;
+            var r = _aspnetUserRolesRepository.Set(user,role);
+
+            return View("Index");
         }
 
         [HttpPost]

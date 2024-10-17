@@ -1,0 +1,66 @@
+﻿@{
+    ViewData["Title"] = "Debite";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <select class="form-select" aria-label="Default select example">
+                <option selected>Empresas</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+            </select>
+        </div>
+        <div class="col">
+            <div class="input-group mb-3">
+              <input type="date" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+            </div>
+        </div>
+        <div class="col">
+            <div class="input-group mb-3">
+                <input type="date" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr>
+
+    <h1>Debite</h1>
+    
+    <table class="table">
+        <thead>
+            <tr>
+            <th>EMPRESA_        </th>
+            <th>CHAVE           </th>
+            <th>FILIAL          </th>
+            <th>COD_PESSOA      </th>
+            <th>INSCR_FEDERAL   </th>
+            <th>NOME            </th>
+            <th>CFOP            </th>
+            <th>TABELA          </th>
+            <th>NUMERONF        </th>
+            <th>MOVIMENTO       </th>
+
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var debit in ViewBag.Debites)
+            {
+                <tr>
+                    <td>@debit.EMPRESA_</td>
+                    <td>@debit.CHAVE</td>
+                    <td>@debit.FILIAL</td>
+                    <td>@debit.COD_PESSOA</td>
+                    <td>@debit.INSCR_FEDERAL</td>
+                    <td>@debit.NOME</td>
+                    <td>@debit.CFOP</td>
+                    <td>@debit.TABELA</td>
+                    <td>@debit.NUMERONF</td>
+                    <td>@debit.MOVIMENTO</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+

@@ -2,6 +2,7 @@ using BLUEY.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BLUEY.Controllers
 {
@@ -17,6 +18,7 @@ namespace BLUEY.Controllers
             return View();
         }
 
+        [Authorize(Policy = "Analista")]
         public IActionResult Privacy()
         {
             _logger.LogInformation("esta é uma pagina privada");

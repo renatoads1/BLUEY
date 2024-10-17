@@ -1,4 +1,5 @@
-﻿@{
+﻿@model List<LCTOFISConsServ>
+@{
     ViewData["Title"] = "Debite";
 }
 
@@ -42,11 +43,13 @@
             <th>TABELA          </th>
             <th>NUMERONF        </th>
             <th>MOVIMENTO       </th>
-
+            <th>CONTACONTABIL</th>
             </tr>
         </thead>
         <tbody>
-        @foreach (var debit in ViewBag.Debites)
+        @if (Model!=null)
+        {
+            @foreach (var debit in Model)
             {
                 <tr>
                     <td>@debit.EMPRESA_</td>
@@ -59,8 +62,27 @@
                     <td>@debit.TABELA</td>
                     <td>@debit.NUMERONF</td>
                     <td>@debit.MOVIMENTO</td>
+                    <td>
+                        <input type="type" name="name" value=" @debit.CONTACONTABIL" />
+                    </td>
                 </tr>
             }
+        }else
+            {
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            }
+
         </tbody>
     </table>
 

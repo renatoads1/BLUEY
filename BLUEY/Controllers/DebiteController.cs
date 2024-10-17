@@ -1,4 +1,5 @@
-﻿using BLUEY.Models.Repositories;
+﻿using BLUEY.Models;
+using BLUEY.Models.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,8 +20,9 @@ namespace BLUEY.Controllers
         // GET: DebiteController
         public ActionResult Index()
         {
-            ViewBag.Debites = _debiteRepository.Get();
-            return View();
+            List< LCTOFISConsServ> debit = new List< LCTOFISConsServ>();
+            debit = _debiteRepository.Get();
+            return View(debit);
         }
 
         // GET: DebiteController/Details/5

@@ -13,5 +13,6 @@
         public int TABELA { get; set; }
         public int NUMERONF { get; set; }
         public string MOVIMENTO { get; set; }
+        public int CONTACONTABIL { get; set; }
     }
 }

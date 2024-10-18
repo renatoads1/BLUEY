@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using BLUEY.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,7 +12,7 @@ namespace BLUEY.Data
         {
         }
 
-
+        DbSet<LCTOFISConsServ> lCTOFISConsServs {  get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

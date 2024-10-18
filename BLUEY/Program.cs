@@ -31,9 +31,10 @@ builder.Services.AddAuthorizationBuilder()
 var serviceProvider = builder.Services.BuildServiceProvider();
 using (var scope = serviceProvider.CreateScope())
 {
+    
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
     var authorizationBuilder = builder.Services.AddAuthorizationBuilder();
-
+    
     foreach (var role in roleManager.Roles.ToList())
     {
         authorizationBuilder.AddPolicy(role.Name, policy => policy.RequireRole(role.Name));

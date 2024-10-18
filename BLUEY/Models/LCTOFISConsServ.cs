@@ -2,6 +2,7 @@
 {
     public class LCTOFISConsServ
     {
+        public int Id { get; set; }
         public int EMPRESA_ { get; set; }
         public int CHAVE { get; set; }
         public int FILIAL { get; set; }

@@ -22,6 +22,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IAspNetUsersRepository, AspNetUsersRepository>();
 builder.Services.AddScoped<IAspnetUserRolesRepository, AspnetUserRolesRepository>();
 builder.Services.AddScoped<IDebiteRepository, DebiteRepository>();
+builder.Services.AddScoped<ITABELACTBFISLCTOCTBRepository, TABELACTBFISLCTOCTBRepository>();
+
+
 // Add policies with hard-coded examples
 builder.Services.AddAuthorizationBuilder()
     .AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"))

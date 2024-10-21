@@ -1,5 +1,6 @@
 ﻿using BLUEY.Models;
 using BLUEY.Models.Repositories;
+using BLUEY.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,20 +9,20 @@ namespace BLUEY.Controllers
     public class DebiteController : BaseController
     {
         private readonly IDebiteRepository _debiteRepository;
+        private readonly IDebiteService _debiteService;
 
-        public DebiteController(ILogger<BaseController> logger,IDebiteRepository debiteRepository) : base(logger)
+        public DebiteController(IDebiteRepository debiteRepository, IDebiteService debiteService)
         {
             _debiteRepository = debiteRepository;
+            _debiteService = debiteService;
         }
-
-
-
 
         // GET: DebiteController
         public ActionResult Index()
         {
-            List< LCTOFISConsServ> debit = new List< LCTOFISConsServ>();
-            debit = _debiteRepository.Get();
+            List< LCTOFISConsServ> debit = new List<LCTOFISConsServ>();
+            debit = _debiteService.GetDebit();
+            //debit = _debiteRepository.Get();
             return View(debit);
         }
 

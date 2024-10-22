@@ -11,11 +11,12 @@ namespace BLUEY.Controllers
         private readonly IDebiteRepository _debiteRepository;
         private readonly IDebiteService _debiteService;
 
-        public DebiteController(IDebiteRepository debiteRepository, IDebiteService debiteService)
+        public DebiteController(ILogger<BaseController> logger, IDebiteRepository debiteRepository, IDebiteService debiteService):base(logger)
         {
             _debiteRepository = debiteRepository;
             _debiteService = debiteService;
         }
+
 
         // GET: DebiteController
         public ActionResult Index()

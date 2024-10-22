@@ -19,7 +19,7 @@ namespace BLUEY.Services
             var lctofisconsserv = _debiteRepository.Get();
             //aqui um lupi para carregar o outro dado
             foreach (var item in lctofisconsserv) {
-                item.TABELACTBFISLCTOCTB = _tabelactbfislctoctbrepository.GetByEmpCtbfis(item.CHAVE,item.TABELA);
+                item.TABELACTBFISLCTOCTB = _tabelactbfislctoctbrepository.GetByEmpCtbfis(item.EMPRESA_,item.TABELA);
             }
             return lctofisconsserv;
         }

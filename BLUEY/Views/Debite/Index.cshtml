@@ -63,7 +63,12 @@
                     <td>@debit.NUMERONF</td>
                     <td>@debit.MOVIMENTO</td>
                     <td>
-                        <input type="type" name="name" value=" @debit.CONTACONTABIL" />
+                        <select class="form-select selectpicker" data-live-search="true">
+                        @foreach (var item in @debit.TABELACTBFISLCTOCTB)
+                        {
+                                <option value="@item.CONTACTB">@item.CONTACTB</option>
+                        }
+                        </select>
                     </td>
                 </tr>
             }
@@ -86,3 +91,9 @@
         </tbody>
     </table>
 
+<!-- Inicializar o Bootstrap Select -->
+<script>
+    $(document).ready(function () {
+        $('.selectpicker').selectpicker();
+    });
+</script>

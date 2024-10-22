@@ -1,5 +1,6 @@
 using BLUEY.Data;
 using BLUEY.Models.Repositories;
+using BLUEY.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -23,7 +24,7 @@ builder.Services.AddScoped<IAspNetUsersRepository, AspNetUsersRepository>();
 builder.Services.AddScoped<IAspnetUserRolesRepository, AspnetUserRolesRepository>();
 builder.Services.AddScoped<IDebiteRepository, DebiteRepository>();
 builder.Services.AddScoped<ITABELACTBFISLCTOCTBRepository, TABELACTBFISLCTOCTBRepository>();
-
+builder.Services.AddScoped<IDebiteService, DebiteService>();
 
 // Add policies with hard-coded examples
 builder.Services.AddAuthorizationBuilder()

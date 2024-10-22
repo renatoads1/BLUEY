@@ -29,21 +29,23 @@
 <hr>
 
     <h1>Debite</h1>
-    
-    <table class="table">
+
+<table class="table">
         <thead>
             <tr>
-            <th>EMPRESA_        </th>
-            <th>CHAVE           </th>
-            <th>FILIAL          </th>
-            <th>COD_PESSOA      </th>
-            <th>INSCR_FEDERAL   </th>
-            <th>NOME            </th>
-            <th>CFOP            </th>
-            <th>TABELA          </th>
-            <th>NUMERONF        </th>
-            <th>MOVIMENTO       </th>
-            <th>CONTACONTABIL</th>
+            <th>EMPRESA</th>
+            @* <th>CHAVE</th> *@
+            <th>FILIAL</th>
+            <th>CÓDIGO</th>
+            <th>CNPJ</th>
+            <th>FORNECEDOR</th>
+            <th>CFOP</th>
+            <th>TABELA</th>
+            @* <th>NUMERONF</th> *@
+            <th>MOV</th>
+            <th>CONTA DÉBITO</th>
+            <th>C.CAD</th>
+            <th>ACTION</th>
             </tr>
         </thead>
         <tbody>
@@ -53,30 +55,32 @@
             {
                 <tr>
                     <td>@debit.EMPRESA_</td>
-                    <td>@debit.CHAVE</td>
+                    @* <td>@debit.CHAVE</td> *@
                     <td>@debit.FILIAL</td>
                     <td>@debit.COD_PESSOA</td>
                     <td>@debit.INSCR_FEDERAL</td>
                     <td>@debit.NOME</td>
                     <td>@debit.CFOP</td>
                     <td>@debit.TABELA</td>
-                    <td>@debit.NUMERONF</td>
+                    @* <td>@debit.NUMERONF</td> *@
                     <td>@debit.MOVIMENTO</td>
                     <td>
-                        <select class="form-select selectpicker" data-live-search="true">
-                        @foreach (var item in @debit.TABELACTBFISLCTOCTB)
-                        {
+                        <select class="form-select selectpicker w-auto" data-live-search="true">
+                            @foreach (var item in @debit.TABELACTBFISLCTOCTB)
+                            {
                                 <option value="@item.CONTACTB">@item.CONTACTB</option>
-                        }
+                            }
                         </select>
                     </td>
+                    <td>aaa</td>
+                    <td>aaaaaaaaaaaaaaaa</td>
                 </tr>
             }
         }else
             {
                 <tr>
-                    <td></td>
-                    <td></td>
+@*                     <td></td>
+                    <td></td> *@
                     <td></td>
                     <td></td>
                     <td></td>

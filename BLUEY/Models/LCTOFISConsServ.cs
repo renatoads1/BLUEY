@@ -16,5 +16,6 @@
         public string MOVIMENTO { get; set; }
         public int CONTACONTABIL { get; set; }
         public List<TABELACTBFISLCTOCTB> TABELACTBFISLCTOCTB { get; set; }
+        public string CONTACADASTRADA { get; set; }
     }
 }

@@ -1,13 +1,17 @@
 ﻿
 
+using BLUEY.Data;
 using Dapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace BLUEY.Models.Repositories
 {
     public class DebiteRepository : BaseRepository, IDebiteRepository
     {
-        public DebiteRepository(IConfiguration configuration) : base(configuration)
+        private readonly ApplicationDbContext _contextM;
+        public DebiteRepository(ApplicationDbContext context, IConfiguration configuration) : base(configuration)
         {
+            _contextM = context;
         }
 
         public List<LCTOFISConsServ> Get()
@@ -93,6 +97,22 @@ namespace BLUEY.Models.Repositories
                             GROUP BY 1,2,3,4,5,6,7,8";
             var r = _conFirebird.Query<LCTOFISConsServ>(sql2).ToList();
             return r;
+        }
+
+        public LCTOFISConsServ SetDebitMR(LCTOFISConsServ lctofisconsserv)
+        {
+            try
+            {
+                _contextM.Add(lctofisconsserv);
+                _contextM.SaveChanges();
+                return lctofisconsserv;
+            }
+            catch (Exception ex)
+            {
+                // Tratar exceções, se necessário
+                throw new Exception("Erro ao salvar o débito: " + ex.Message);
+            }
+
         }
     }
 }

@@ -14,7 +14,6 @@ namespace BLUEY.Data
 
         DbSet<LCTOFISConsServ> lCTOFISConsServs {  get; set; }
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

@@ -21,7 +21,7 @@ namespace BLUEY.Controllers
         // GET: DebiteController
         public ActionResult Index()
         {
-            List< LCTOFISConsServ> debit = new List<LCTOFISConsServ>();
+            List<LCTOFISConsServ> debit = new List<LCTOFISConsServ>();
             debit = _debiteService.GetDebit();
             //debit = _debiteRepository.Get();
             return View(debit);

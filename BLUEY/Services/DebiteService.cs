@@ -23,5 +23,10 @@ namespace BLUEY.Services
             }
             return lctofisconsserv;
         }
+
+        public LCTOFISConsServ setDebitM(LCTOFISConsServ lctofisconsserv)
+        {
+            return _debiteRepository.SetDebitMR(lctofisconsserv);
+        }
     }
 }

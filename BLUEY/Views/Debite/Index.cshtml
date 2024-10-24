@@ -90,6 +90,7 @@
                     </td>
                     <td>
                         <select class="form-select selectpicker w-auto" data-live-search="true">
+                            <option value="">Select</option>
                             @foreach (var item in @debit.TABELACTBFISLCTOCTB)
                             {
                                 <option value="@item.CONTACTB">@item.CONTACTB</option>
@@ -98,7 +99,7 @@
                     </td>
                     <td>aaa</td>
                     <td>
-                        <button type="button" class="btn btn-primary save-debit" data-id="@debit.COD_PESSOA">Salvar</button>
+                        <button type="button" class="btn btn-primary save-debit" onclick="send(this.closest('tr'))" data-id="@debit.COD_PESSOA">Salvar</button>
                     </td>
                 </tr>
             }
@@ -124,42 +125,51 @@
 
 <!-- Inicializar o Bootstrap Select -->
 <script>
-    $(document).ready(function () {
-        $('.selectpicker').selectpicker();
+    function send(row) {
 
-        // Manipular o clique no botão de salvar
-        $('.save-debit').on('click', function () {
-            // Obtenha a linha onde o botão foi clicado
-            var row = $(this).closest('tr');
+        const dropdownButton = row.querySelector('button[data-bs-toggle="dropdown"]');
+        // Pegando o valor do atributo title
+        const titleValue = dropdownButton ? dropdownButton.title : null;
 
-            // Coletar dados da linha
-            var debitData = {
-                EMPRESA_: row.find('.EMPRESA_').val(),
-                FILIAL: row.find('.FILIAL').val(),
-                COD_PESSOA: row.find('.COD_PESSOA').val(),
-                INSCR_FEDERAL: row.find('.INSCR_FEDERAL').val(),
-                NOME: row.find('.NOME').val(),
-                CFOP: row.find('.CFOP').val(),
-                TABELA: row.find('.TABELA').val(),
-                MOVIMENTO: row.find('.MOVIMENTO').val(),
-                CONTACTB: row.find('.CONTACTB').val()
-            };
-
+        const datadebit = {
+            EMPRESA_: row.querySelector('.EMPRESA_').value,
+            FILIAL: row.querySelector('.FILIAL').value,
+            COD_PESSOA: row.querySelector('.COD_PESSOA').value,
+            INSCR_FEDERAL: row.querySelector('.INSCR_FEDERAL').value,
+            NOME: row.querySelector('.NOME').value,
+            CFOP: row.querySelector('.CFOP').value,
+            TABELA: row.querySelector('.TABELA').value,
+            MOVIMENTO: row.querySelector('.MOVIMENTO').value,
+            TABELACTBFISLCTOCTB: titleValue
+        };
+        if (titleValue != "Select") {
             // Enviar dados para o servidor via AJAX
             $.ajax({
                 type: "POST",
-                url: '@Url.Action("SaveDebit", "LCTOFISConsServ")',
-                data: debitData,
+                url: '@Url.Action("SetDebit", "Debite")',
+                contentType: "application/json", // Especifica que o conteúdo está no formato JSON
+                data: JSON.stringify(datadebit), // Converte o objeto para JSON
                 success: function (response) {
                     // Mostrar mensagem de sucesso
-                    alert('Dados salvos com sucesso!');
+                    console.log('Dados salvos com sucesso!');
                 },
                 error: function () {
                     // Mostrar mensagem de erro
-                    alert('Ocorreu um erro ao salvar os dados.');
+                    console.log('Ocorreu um erro ao salvar os dados.');
                 }
             });
-        });
+        } else {
+            let x = row.querySelector(".selectpicker");
+            let nearestDiv = x.closest('div');
+            nearestDiv.style.border = "2px solid red";
+            setTimeout(function () {
+                nearestDiv.style.border = "";
+            }, 2000);
+        }
+    }
+
+    $(document).ready(function () {
+        $('.selectpicker').selectpicker();
     });
 
 </script>

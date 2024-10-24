@@ -1,11 +1,13 @@
 ﻿using BLUEY.Models;
 using BLUEY.Models.Repositories;
+using BLUEY.Models.ViewModels;
 using BLUEY.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BLUEY.Controllers
 {
+
     public class DebiteController : BaseController
     {
         private readonly IDebiteRepository _debiteRepository;
@@ -25,6 +27,26 @@ namespace BLUEY.Controllers
             debit = _debiteService.GetDebit();
             //debit = _debiteRepository.Get();
             return View(debit);
+        }
+
+        [HttpPost]
+        [Route("/SetDebit")]
+        public async Task<JsonResult> SetDebit([FromBody] LctofisconsServViewModel lctofisconsservviewmodel) 
+        {
+            LCTOFISConsServ lcto = new LCTOFISConsServ();
+            lcto.EMPRESA_ = lctofisconsservviewmodel.EMPRESA_;
+            lcto.FILIAL = lctofisconsservviewmodel.FILIAL;
+            lcto.COD_PESSOA = lctofisconsservviewmodel.COD_PESSOA;
+            lcto.INSCR_FEDERAL = lctofisconsservviewmodel.COD_PESSOA.ToString();
+            lcto.NOME = lctofisconsservviewmodel.NOME;
+            lcto.CFOP = lctofisconsservviewmodel.CFOP;
+            lcto.TABELA = lctofisconsservviewmodel.TABELA;
+            lcto.MOVIMENTO = lctofisconsservviewmodel.TABELA.ToString();
+            lcto.CONTACADASTRADA = lctofisconsservviewmodel.TABELACTBFISLCTOCTB;
+
+            _debiteService.setDebitM(lcto);
+
+            return new JsonResult(true);
         }
 
         // GET: DebiteController/Details/5

@@ -19,6 +19,13 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
+//aceita json
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.PropertyNamingPolicy = null; // Use nomes de propriedade como estão
+});
+
+
 // Map interface to implementation classes
 builder.Services.AddScoped<IAspNetUsersRepository, AspNetUsersRepository>();
 builder.Services.AddScoped<IAspnetUserRolesRepository, AspnetUserRolesRepository>();

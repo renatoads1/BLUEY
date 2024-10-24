@@ -114,6 +114,12 @@ namespace BLUEY.Models.Repositories
         {
             try
             {
+                // Verifique se o registro já existe no banco de dados.
+                // Substitua os critérios de comparação (Ex: COD_PESSOA) pelos campos relevantes para sua aplicação.
+                bool exists = _contextM.LCTOFISConsServs
+                                .Any(x => x.COD_PESSOA == lctofisconsserv.COD_PESSOA &&
+                                          x.FILIAL == lctofisconsserv.FILIAL);
+
                 _contextM.Add(lctofisconsserv);
                 _contextM.SaveChanges();
                 return lctofisconsserv;

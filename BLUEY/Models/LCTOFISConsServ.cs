@@ -1,4 +1,6 @@
-﻿namespace BLUEY.Models
+﻿using BLUEY.Models;
+
+namespace BLUEY.Models
 {
     public class LCTOFISConsServ
     {

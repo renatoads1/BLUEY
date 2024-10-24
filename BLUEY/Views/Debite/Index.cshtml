@@ -49,21 +49,45 @@
             </tr>
         </thead>
         <tbody>
-        @if (Model!=null)
+        @if (Model!=null && Model.Count>0 )
         {
             @foreach (var debit in Model)
             {
                 <tr>
-                    <td>@debit.EMPRESA_</td>
+                    <td>
+                        <input type="hidden" class="EMPRESA_" value="@debit.EMPRESA_" />
+                        @debit.EMPRESA_
+                    </td>
                     @* <td>@debit.CHAVE</td> *@
-                    <td>@debit.FILIAL</td>
-                    <td>@debit.COD_PESSOA</td>
-                    <td>@debit.INSCR_FEDERAL</td>
-                    <td>@debit.NOME</td>
-                    <td>@debit.CFOP</td>
-                    <td>@debit.TABELA</td>
+                    <td>
+                        <input type="hidden" class="FILIAL" value="@debit.FILIAL" />
+                        @debit.FILIAL
+                    </td>
+                    <td>
+                        <input type="hidden" class="COD_PESSOA" value="@debit.COD_PESSOA" />
+                        @debit.COD_PESSOA
+                    </td>
+                    <td>
+                        <input type="hidden" class="INSCR_FEDERAL" value="@debit.INSCR_FEDERAL" />
+                        @debit.INSCR_FEDERAL
+                    </td>
+                    <td>
+                        <input type="hidden" class="NOME" value="@debit.NOME" />
+                        @debit.NOME
+                    </td>
+                    <td>
+                        <input type="hidden" class="CFOP" value="@debit.CFOP" />
+                        @debit.CFOP
+                    </td>
+                    <td>
+                        <input type="hidden" class="TABELA" value="@debit.TABELA" />
+                        @debit.TABELA
+                    </td>
                     @* <td>@debit.NUMERONF</td> *@
-                    <td>@debit.MOVIMENTO</td>
+                    <td>
+                        <input type="hidden" class="MOVIMENTO" value="@debit.MOVIMENTO" />
+                        @debit.MOVIMENTO
+                    </td>
                     <td>
                         <select class="form-select selectpicker w-auto" data-live-search="true">
                             @foreach (var item in @debit.TABELACTBFISLCTOCTB)
@@ -73,22 +97,25 @@
                         </select>
                     </td>
                     <td>aaa</td>
-                    <td>aaaaaaaaaaaaaaaa</td>
+                    <td>
+                        <button type="button" class="btn btn-primary save-debit" data-id="@debit.COD_PESSOA">Salvar</button>
+                    </td>
                 </tr>
             }
         }else
             {
                 <tr>
-@*                     <td></td>
-                    <td></td> *@
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td> 
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
                 </tr>
             }
 
@@ -99,5 +126,40 @@
 <script>
     $(document).ready(function () {
         $('.selectpicker').selectpicker();
+
+        // Manipular o clique no botão de salvar
+        $('.save-debit').on('click', function () {
+            // Obtenha a linha onde o botão foi clicado
+            var row = $(this).closest('tr');
+
+            // Coletar dados da linha
+            var debitData = {
+                EMPRESA_: row.find('.EMPRESA_').val(),
+                FILIAL: row.find('.FILIAL').val(),
+                COD_PESSOA: row.find('.COD_PESSOA').val(),
+                INSCR_FEDERAL: row.find('.INSCR_FEDERAL').val(),
+                NOME: row.find('.NOME').val(),
+                CFOP: row.find('.CFOP').val(),
+                TABELA: row.find('.TABELA').val(),
+                MOVIMENTO: row.find('.MOVIMENTO').val(),
+                CONTACTB: row.find('.CONTACTB').val()
+            };
+
+            // Enviar dados para o servidor via AJAX
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SaveDebit", "LCTOFISConsServ")',
+                data: debitData,
+                success: function (response) {
+                    // Mostrar mensagem de sucesso
+                    alert('Dados salvos com sucesso!');
+                },
+                error: function () {
+                    // Mostrar mensagem de erro
+                    alert('Ocorreu um erro ao salvar os dados.');
+                }
+            });
+        });
     });
+
 </script>

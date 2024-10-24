@@ -3,6 +3,7 @@
 using BLUEY.Data;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace BLUEY.Models.Repositories
 {
@@ -12,6 +13,7 @@ namespace BLUEY.Models.Repositories
         public DebiteRepository(ApplicationDbContext context, IConfiguration configuration) : base(configuration)
         {
             _contextM = context;
+
         }
 
         public List<LCTOFISConsServ> Get()
@@ -95,8 +97,17 @@ namespace BLUEY.Models.Repositories
                             OR  B.CODIGOCFOP LIKE '1551%'
                             OR  B.CODIGOCFOP LIKE '2551%'))
                             GROUP BY 1,2,3,4,5,6,7,8";
-            var r = _conFirebird.Query<LCTOFISConsServ>(sql2).ToList();
-            return r;
+            try
+            {
+                var r = _conFirebird.Query<LCTOFISConsServ>(sql2).ToList();
+                return r;
+            }
+            catch (Exception ex) {
+                //_logger.LogError("Erro ao conectar com Firebird");
+                List<LCTOFISConsServ> lst = new List<LCTOFISConsServ>();
+                return lst;
+             }
+            
         }
 
         public LCTOFISConsServ SetDebitMR(LCTOFISConsServ lctofisconsserv)
@@ -109,8 +120,10 @@ namespace BLUEY.Models.Repositories
             }
             catch (Exception ex)
             {
-                // Tratar exceções, se necessário
-                throw new Exception("Erro ao salvar o débito: " + ex.Message);
+                //_logger.LogError(ex.Message);
+                LCTOFISConsServ l = new LCTOFISConsServ();
+                return l;
+                
             }
 
         }

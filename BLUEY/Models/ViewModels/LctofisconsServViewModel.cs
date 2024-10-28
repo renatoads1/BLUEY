@@ -2,6 +2,7 @@
 {
     public class LctofisconsServViewModel
     {
+        //public int Id { get; set; }
         public int EMPRESA_ { get; set; }
         public int FILIAL { get; set; }
         public int COD_PESSOA { get; set; }

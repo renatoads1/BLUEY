@@ -70,6 +70,36 @@ namespace BLUEY.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "lCTOFISConsServs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    EMPRESA_ = table.Column<int>(type: "int", nullable: false),
+                    CHAVE = table.Column<int>(type: "int", nullable: false),
+                    FILIAL = table.Column<int>(type: "int", nullable: false),
+                    COD_PESSOA = table.Column<int>(type: "int", nullable: false),
+                    INSCR_FEDERAL = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    NOME = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    VALOR = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    CFOP = table.Column<int>(type: "int", nullable: false),
+                    TABELA = table.Column<int>(type: "int", nullable: false),
+                    NUMERONF = table.Column<int>(type: "int", nullable: false),
+                    MOVIMENTO = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CONTACONTABIL = table.Column<int>(type: "int", nullable: false),
+                    CONTACADASTRADA = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_lCTOFISConsServs", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -196,6 +226,30 @@ namespace BLUEY.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
+            migrationBuilder.CreateTable(
+                name: "TABELACTBFISLCTOCTB",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    CODIGOEMPRESA = table.Column<int>(type: "int", nullable: false),
+                    CONTACTB = table.Column<int>(type: "int", nullable: false),
+                    CODIGOHISTCTB = table.Column<int>(type: "int", nullable: false),
+                    COMPLHISTCTB = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    LCTOFISConsServId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TABELACTBFISLCTOCTB", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TABELACTBFISLCTOCTB_lCTOFISConsServs_LCTOFISConsServId",
+                        column: x => x.LCTOFISConsServId,
+                        principalTable: "lCTOFISConsServs",
+                        principalColumn: "Id");
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -232,6 +286,11 @@ namespace BLUEY.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TABELACTBFISLCTOCTB_LCTOFISConsServId",
+                table: "TABELACTBFISLCTOCTB",
+                column: "LCTOFISConsServId");
         }
 
         /// <inheritdoc />
@@ -253,10 +312,16 @@ namespace BLUEY.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "TABELACTBFISLCTOCTB");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "lCTOFISConsServs");
         }
     }
 }

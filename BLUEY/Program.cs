@@ -25,7 +25,6 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.PropertyNamingPolicy = null; // Use nomes de propriedade como estão
 });
 
-
 // Map interface to implementation classes
 builder.Services.AddScoped<IAspNetUsersRepository, AspNetUsersRepository>();
 builder.Services.AddScoped<IAspnetUserRolesRepository, AspnetUserRolesRepository>();
@@ -92,7 +91,7 @@ using (var scope = app.Services.CreateScope())
     }
 
     // Find the user and add to "Admin" role, if not already assigned
-    var user = await userManager.FindByEmailAsync("isabela@gmail.com");
+    var user = await userManager.FindByEmailAsync("Administrador@gmail.com");
     if (user != null && !(await userManager.IsInRoleAsync(user, "Admin")))
     {
         await userManager.AddToRoleAsync(user, "Admin");

@@ -7,7 +7,7 @@
         public Roles GetByName(string name);
         public Roles Add(Roles role);
         public Roles Update(Roles role);
-        public Roles Delete(int id);
+        public void Delete(int id);
 
     }
 }

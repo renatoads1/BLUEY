@@ -1,12 +1,17 @@
 ﻿
+using BLUEY.Data;
 using Dapper;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace BLUEY.Models.Repositories
 {
     public class AspnetUserRolesRepository : BaseRepository,IAspnetUserRolesRepository
     {
-        public AspnetUserRolesRepository(IConfiguration configuration) : base(configuration)
+        //private readonly ApplicationDbContext _contextM;
+        public AspnetUserRolesRepository(/*ApplicationDbContext context,*/ IConfiguration configuration) : base(configuration)
         {
+            //_contextM = context;
         }
 
         public bool Set(string userId, string roleId)

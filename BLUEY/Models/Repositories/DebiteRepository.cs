@@ -110,28 +110,49 @@ namespace BLUEY.Models.Repositories
             
         }
 
-        public LCTOFISConsServ SetDebitMR(LCTOFISConsServ lctofisconsserv)
+        public bool SetDebitMR(LCTOFISConsServ lctofisconsserv)
         {
-            try
+            using (var connection = _conMariaDb) // Certifique-se de que _conMariaDb esteja configurado para abrir uma nova conexão se necessário
             {
-                // Verifique se o registro já existe no banco de dados.
-                // Substitua os critérios de comparação (Ex: COD_PESSOA) pelos campos relevantes para sua aplicação.
-                bool exists = _contextM.LCTOFISConsServs
-                                .Any(x => x.COD_PESSOA == lctofisconsserv.COD_PESSOA &&
-                                          x.FILIAL == lctofisconsserv.FILIAL);
+                connection.Open();
 
-                _contextM.Add(lctofisconsserv);
-                _contextM.SaveChanges();
-                return lctofisconsserv;
+                using (var transaction = connection.BeginTransaction())
+                {
+                    try { 
+
+                        string sql = @"INSERT INTO BlueDB.lCTOFISConsServs (EMPRESA_, CHAVE, FILIAL, COD_PESSOA, INSCR_FEDERAL, NOME, VALOR, CFOP, TABELA, NUMERONF, MOVIMENTO, CONTACONTABIL, CONTACADASTRADA) VALUES(@EMPRESA_, @CHAVE, @FILIAL, @COD_PESSOA, @INSCR_FEDERAL, @NOME, @VALOR, @CFOP, @TABELA, @NUMERONF, @MOVIMENTO, @CONTACONTABIL, @CONTACADASTRADA);";
+
+                        connection.Execute(sql, lctofisconsserv, transaction: transaction);
+
+                        // Commit da transação se tudo ocorreu bem
+                        transaction.Commit();
+                        return true;
+                    }
+                    catch (Exception)
+                    {
+                        // Rollback da transação em caso de erro
+                        transaction.Rollback();
+                        return false;
+                    }
+                }
             }
-            catch (Exception ex)
-            {
-                //_logger.LogError(ex.Message);
-                LCTOFISConsServ l = new LCTOFISConsServ();
-                return l;
+
+            //try
+            //{
+            //    //passar para dapepr com procedure
+            //    _contextM.Add(lctofisconsserv);
+            //    _contextM.SaveChanges();
+            //    return lctofisconsserv;
+            //}
+            //catch (Exception ex)
+            //{
+            //    //_logger.LogError(ex.Message);
+            //    LCTOFISConsServ l = new LCTOFISConsServ();
+            //    return l;
                 
-            }
+            //}
 
         }
+
     }
 }

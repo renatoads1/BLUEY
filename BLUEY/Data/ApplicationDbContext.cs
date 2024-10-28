@@ -1,4 +1,5 @@
 ﻿using BLUEY.Models;
+using BLUEY.Models.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,10 @@ namespace BLUEY.Data
         {
         }
 
-        DbSet<LCTOFISConsServ> lCTOFISConsServs {  get; set; }
+        public DbSet<LCTOFISConsServ> lCTOFISConsServs {  get; set; }
+        //public DbSet<Roles> roles { get; set; }
+        //public DbSet<AspNetUserRoles> aspNetUserRoles { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

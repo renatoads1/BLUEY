@@ -5,6 +5,6 @@ namespace BLUEY.Services
     public interface IDebiteService
     {
         public List<LCTOFISConsServ> GetDebit();
-        public LCTOFISConsServ setDebitM(LCTOFISConsServ lctofisconsserv);
+        public bool setDebitM(LCTOFISConsServ lctofisconsserv);
     }
 }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BLUEY.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241023105807_contacadastrada")]
-    partial class contacadastrada
+    [Migration("20241025145727_InitialIdentitySchema")]
+    partial class InitialIdentitySchema
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

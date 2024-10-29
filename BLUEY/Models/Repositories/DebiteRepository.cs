@@ -15,7 +15,102 @@ namespace BLUEY.Models.Repositories
             _contextM = context;
 
         }
+        public List<LCTOFISConsServ> Get(string empresa, string datain, string dataout) {
+            string sql2 = @"SELECT 
+                            EMPRESA_,
+                            FILIAL,
+                            COD_PESSOA,
+                            INSCR_FEDERAL,
+                            NOME,
+                            CFOP,
+                            TABELA,
+                            MOVIMENTO
+                            FROM (select 
+                            A.CODIGOEMPRESA AS EMPRESA_,
+                            A.CHAVELCTOFISENT AS CHAVE,
+                            A.CODIGOESTAB AS FILIAL,
+                            A.CODIGOPESSOA AS COD_PESSOA,
+                            C.INSCRFEDERAL AS INSCR_FEDERAL,
+                            C.NOMEPESSOA AS NOME,
+                            B.VALORCONTABILIMPOSTO AS VALOR,
+                            B.CODIGOCFOP AS CFOP,
+                            B.CODIGOTABCTBFIS AS TABELA,
+                            A.NUMERONF,
+                            'ME' AS MOVIMENTO
+                            from LCTOFISENT AS A,
+                            LCTOFISENTCFOP AS B,
+                            PESSOA AS C,
+                            EMPRESA AS D
+                            WHERE A.CODIGOEMPRESA = B.CODIGOEMPRESA
+                            AND A.CODIGOESTAB = B.CODIGOESTAB
+                            AND A.CHAVELCTOFISENT = B.CHAVELCTOFISENT
+                            AND A.CODIGOPESSOA = C.CODIGOPESSOA
+                            AND A.CODIGOEMPRESA = D.CODIGOEMPRESA
+                            AND A.CODIGOEMPRESA = @CODIGOEMPRESA
+                            AND A.DATALCTOFIS BETWEEN @DATALCTOFIS_IN AND @DATALCTOFIS_OUT
+                            AND B.CODIGOTABCTBFIS IS NOT NULL
+                            AND (B.CODIGOCFOP LIKE '8%' 
+                            OR B.CODIGOCFOP LIKE '1407%' 
+                            OR B.CODIGOCFOP LIKE '1556%' 
+                            OR B.CODIGOCFOP LIKE '2407%' 
+                            OR  B.CODIGOCFOP LIKE '2556%'
+                            OR  B.CODIGOCFOP LIKE '1406%'
+                            OR  B.CODIGOCFOP LIKE '2406%'
+                            OR  B.CODIGOCFOP LIKE '1551%'
+                            OR  B.CODIGOCFOP LIKE '2551%')
 
+                            UNION ALL
+
+                            select 
+                            A.CODIGOEMPRESA AS EMPRESA_,
+                            B.CHAVELCTOFISENTRETIDO AS CHAVE,
+                            A.CODIGOESTAB AS FILIAL,
+                            A.CODIGOPESSOA AS COD_PESSOA,
+                            C.INSCRFEDERAL AS INSCR_FEDERAL,
+                            C.NOMEPESSOA AS NOME,
+                            B.VALORCONTABIL AS VALOR,
+                            B.CODIGOCFOP AS CFOP,
+                            B.CODIGOTABCTBFIS AS TABELA,
+                            A.NUMERONF,
+                            'RE' AS MOVIMENTO
+                            from LCTOFISENT AS A,
+                            LCTOFISENTRETIDO AS B,
+                            PESSOA AS C,
+                            EMPRESA AS D
+                            WHERE A.CODIGOEMPRESA = B.CODIGOEMPRESA
+                            AND A.CODIGOESTAB = B.CODIGOESTAB
+                            AND A.CHAVELCTOFISENT = B.CHAVELCTOFISENT
+                            AND A.CODIGOPESSOA = C.CODIGOPESSOA
+                            AND A.CODIGOEMPRESA = D.CODIGOEMPRESA
+                            AND A.CODIGOEMPRESA = @CODIGOEMPRESA
+                            AND A.DATALCTOFIS BETWEEN @DATALCTOFIS_IN AND @DATALCTOFIS_OUT
+                            AND B.CODIGOTABCTBFIS IS NOT NULL
+                            AND (B.CODIGOCFOP LIKE '8%' 
+                            OR B.CODIGOCFOP LIKE '1407%' 
+                            OR B.CODIGOCFOP LIKE '1556%' 
+                            OR B.CODIGOCFOP LIKE '2407%' 
+                            OR  B.CODIGOCFOP LIKE '2556%'
+                            OR  B.CODIGOCFOP LIKE '1406%'
+                            OR  B.CODIGOCFOP LIKE '2406%'
+                            OR  B.CODIGOCFOP LIKE '1551%'
+                            OR  B.CODIGOCFOP LIKE '2551%'))
+                            GROUP BY 1,2,3,4,5,6,7,8";
+            try
+            {
+                var r = _conFirebird.Query<LCTOFISConsServ>(sql2,new {
+                    CODIGOEMPRESA = empresa,
+                    DATALCTOFIS_IN = datain,
+                    DATALCTOFIS_OUT = dataout
+                }).ToList();
+                return r;
+            }
+            catch (Exception ex)
+            {
+                //_logger.LogError("Erro ao conectar com Firebird");
+                List<LCTOFISConsServ> lst = new List<LCTOFISConsServ>();
+                return lst;
+            }
+        }
         public List<LCTOFISConsServ> Get()
         {
             string sql2 = @"SELECT 
@@ -112,47 +207,108 @@ namespace BLUEY.Models.Repositories
 
         public bool SetDebitMR(LCTOFISConsServ lctofisconsserv)
         {
-            using (var connection = _conMariaDb) // Certifique-se de que _conMariaDb esteja configurado para abrir uma nova conexão se necessário
+
+            //using (var connection = _conMariaDb) // Certifique-se de que _conMariaDb esteja configurado para abrir uma nova conexão se necessário
+            //{
+            //    connection.Open();
+
+            //    using (var transaction = connection.BeginTransaction())
+            //    {
+            //        try { 
+
+            //            string sql = @"INSERT INTO BlueDB.lCTOFISConsServs (EMPRESA_, CHAVE, FILIAL, COD_PESSOA, INSCR_FEDERAL, NOME, VALOR, CFOP, TABELA, NUMERONF, MOVIMENTO, CONTACONTABIL, CONTACADASTRADA) VALUES(@EMPRESA_, @CHAVE, @FILIAL, @COD_PESSOA, @INSCR_FEDERAL, @NOME, @VALOR, @CFOP, @TABELA, @NUMERONF, @MOVIMENTO, @CONTACONTABIL, @CONTACADASTRADA);";
+
+            //            connection.Execute(sql, lctofisconsserv, transaction: transaction);
+
+            //            // Commit da transação se tudo ocorreu bem
+            //            transaction.Commit();
+            //            return true;
+            //        }
+            //        catch (Exception)
+            //        {
+            //            // Rollback da transação em caso de erro
+            //            transaction.Rollback();
+            //            return false;
+            //        }
+            //    }
+            //}
+
+            try
             {
-                connection.Open();
+                //passar para dapepr com procedure
+                var existe = _contextM.
+                    lCTOFISConsServs.
+                    Select(a =>
+                    a.EMPRESA_ == lctofisconsserv.EMPRESA_ &&
+                    a.FILIAL == lctofisconsserv.FILIAL &&
+                    a.COD_PESSOA == lctofisconsserv.COD_PESSOA &&
+                    a.INSCR_FEDERAL == lctofisconsserv.INSCR_FEDERAL &&
+                    a.NOME == lctofisconsserv.NOME &&
+                    a.CFOP == lctofisconsserv.CFOP &&
+                    a.TABELA == lctofisconsserv.TABELA &&
+                    a.MOVIMENTO == lctofisconsserv.MOVIMENTO &&
+                    a.CONTACADASTRADA == lctofisconsserv.CONTACADASTRADA
 
-                using (var transaction = connection.BeginTransaction())
-                {
-                    try { 
+                    ).First();
+                //se esta fazendo update
+                var existeUpdate = _contextM.
+                    lCTOFISConsServs.
+                    Select(a =>
+                    a.EMPRESA_ == lctofisconsserv.EMPRESA_ &&
+                    a.FILIAL == lctofisconsserv.FILIAL &&
+                    a.COD_PESSOA == lctofisconsserv.COD_PESSOA &&
+                    a.INSCR_FEDERAL == lctofisconsserv.INSCR_FEDERAL &&
+                    a.NOME == lctofisconsserv.NOME &&
+                    a.CFOP == lctofisconsserv.CFOP &&
+                    a.TABELA == lctofisconsserv.TABELA &&
+                    a.MOVIMENTO == lctofisconsserv.MOVIMENTO &&
+                    a.CONTACADASTRADA != lctofisconsserv.CONTACADASTRADA
 
-                        string sql = @"INSERT INTO BlueDB.lCTOFISConsServs (EMPRESA_, CHAVE, FILIAL, COD_PESSOA, INSCR_FEDERAL, NOME, VALOR, CFOP, TABELA, NUMERONF, MOVIMENTO, CONTACONTABIL, CONTACADASTRADA) VALUES(@EMPRESA_, @CHAVE, @FILIAL, @COD_PESSOA, @INSCR_FEDERAL, @NOME, @VALOR, @CFOP, @TABELA, @NUMERONF, @MOVIMENTO, @CONTACONTABIL, @CONTACADASTRADA);";
+                    ).First();
 
-                        connection.Execute(sql, lctofisconsserv, transaction: transaction);
 
-                        // Commit da transação se tudo ocorreu bem
-                        transaction.Commit();
+                if (existeUpdate) {
+                    var x = _contextM
+                       .lCTOFISConsServs
+                       .FirstOrDefault(a =>
+                           a.EMPRESA_ == lctofisconsserv.EMPRESA_ &&
+                           a.FILIAL == lctofisconsserv.FILIAL &&
+                           a.COD_PESSOA == lctofisconsserv.COD_PESSOA &&
+                           a.INSCR_FEDERAL == lctofisconsserv.INSCR_FEDERAL &&
+                           a.NOME == lctofisconsserv.NOME &&
+                           a.CFOP == lctofisconsserv.CFOP &&
+                           a.TABELA == lctofisconsserv.TABELA &&
+                           a.MOVIMENTO == lctofisconsserv.MOVIMENTO &&
+                           a.CONTACADASTRADA != lctofisconsserv.CONTACADASTRADA
+                       );
+
+                    if (x != null)
+                    {
+                        x.CONTACADASTRADA = lctofisconsserv.CONTACADASTRADA;
+                        _contextM.SaveChanges();
+                        existe = true;
                         return true;
                     }
-                    catch (Exception)
-                    {
-                        // Rollback da transação em caso de erro
-                        transaction.Rollback();
-                        return false;
-                    }
+
                 }
+
+                if (!existe)
+                {
+                    _contextM.Add(lctofisconsserv);
+                    _contextM.SaveChanges();
+                    return true;
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                //_logger.LogError(ex.Message);
+                return false;
             }
 
-            //try
-            //{
-            //    //passar para dapepr com procedure
-            //    _contextM.Add(lctofisconsserv);
-            //    _contextM.SaveChanges();
-            //    return lctofisconsserv;
-            //}
-            //catch (Exception ex)
-            //{
-            //    //_logger.LogError(ex.Message);
-            //    LCTOFISConsServ l = new LCTOFISConsServ();
-            //    return l;
-                
-            //}
-
         }
+
 
     }
 }

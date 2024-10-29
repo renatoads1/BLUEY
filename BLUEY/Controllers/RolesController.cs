@@ -46,8 +46,8 @@ namespace BLUEY.Controllers
             var user = userId;
             var role = roleId;
             var r = _aspnetUserRolesRepository.Set(user,role);
-
-            return View("Index");
+            var regras = _roleManager.Roles.ToList();
+            return View("Index",regras);
         }
 
         [HttpPost]

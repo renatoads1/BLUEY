@@ -11,14 +11,26 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var role in Model)
+        @if (Model!=null)
         {
+            @foreach (var role in Model)
+            {
+                <tr>
+                    <td>@role.Name</td>
+                    <td>
+                        <a asp-action="Delete" asp-route-id="@role.Id" class="btn btn-danger">Excluir</a>
+                    </td>
+                </tr>
+            }
+        }else{
+
             <tr>
-                <td>@role.Name</td>
+                <td></td>
                 <td>
-                    <a asp-action="Delete" asp-route-id="@role.Id" class="btn btn-danger">Excluir</a>
+                    <a asp-action="Delete" asp-route-id="" class="btn btn-danger">Excluir</a>
                 </td>
             </tr>
         }
+
     </tbody>
 </table>

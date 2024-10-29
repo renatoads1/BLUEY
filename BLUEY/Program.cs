@@ -31,6 +31,7 @@ builder.Services.AddScoped<IAspnetUserRolesRepository, AspnetUserRolesRepository
 builder.Services.AddScoped<IDebiteRepository, DebiteRepository>();
 builder.Services.AddScoped<ITABELACTBFISLCTOCTBRepository, TABELACTBFISLCTOCTBRepository>();
 builder.Services.AddScoped<IDebiteService, DebiteService>();
+builder.Services.AddScoped<IEmpresaRepository, EmpresaRepository>();
 
 // Add policies with hard-coded examples
 builder.Services.AddAuthorizationBuilder()
@@ -38,18 +39,18 @@ builder.Services.AddAuthorizationBuilder()
     .AddPolicy("AdminClaimPolicy", policy => policy.RequireClaim("IsAdmin", "true"));
 
 // Register dynamic policies based on roles in AspNetRoles table
-var serviceProvider = builder.Services.BuildServiceProvider();
-using (var scope = serviceProvider.CreateScope())
-{
+//var serviceProvider = builder.Services.BuildServiceProvider();
+//using (var scope = serviceProvider.CreateScope())
+//{
     
-    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-    var authorizationBuilder = builder.Services.AddAuthorizationBuilder();
+//    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+//    var authorizationBuilder = builder.Services.AddAuthorizationBuilder();
     
-    foreach (var role in roleManager.Roles.ToList())
-    {
-        authorizationBuilder.AddPolicy(role.Name, policy => policy.RequireRole(role.Name));
-    }
-}
+//    foreach (var role in roleManager.Roles.ToList())
+//    {
+//        authorizationBuilder.AddPolicy(role.Name, policy => policy.RequireRole(role.Name));
+//    }
+//}
 
 var app = builder.Build();
 
@@ -91,7 +92,7 @@ using (var scope = app.Services.CreateScope())
     }
 
     // Find the user and add to "Admin" role, if not already assigned
-    var user = await userManager.FindByEmailAsync("Administrador@gmail.com");
+    var user = await userManager.FindByEmailAsync("renatoads1@gmail.com");
     if (user != null && !(await userManager.IsInRoleAsync(user, "Admin")))
     {
         await userManager.AddToRoleAsync(user, "Admin");

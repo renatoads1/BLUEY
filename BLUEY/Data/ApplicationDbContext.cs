@@ -14,10 +14,9 @@ namespace BLUEY.Data
         }
 
         public DbSet<LCTOFISConsServ> lCTOFISConsServs {  get; set; }
-        //public DbSet<Roles> roles { get; set; }
-        //public DbSet<AspNetUserRoles> aspNetUserRoles { get; set; }
-
-
+        public DbSet<IdentityRole> roles { get; set; }
+        public DbSet<IdentityUserRole<string>> userRoles { get; set; }
+        //public DbSet<Users> users { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

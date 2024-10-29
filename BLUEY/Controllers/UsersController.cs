@@ -20,18 +20,11 @@ namespace BLUEY.Controllers
         {
             _usersRepository = usersRepository;
         }
-        
+
         public IActionResult Index()
         {
-            //se o usuário for admin é impressa a lista de users
-            var isAdmin = User.HasClaim(c => c.Type == "IsAdmin" && c.Value == "true");
-            if (isAdmin)
-            {
-                //var users = _usersRepository.GetAll();
-                var users = _usersRepository.GetUserRoles();
-                return View(users);
-            }
-            return View();
+            var users = _usersRepository.GetUserRoles();
+            return View(users);
         }
 
         [HttpGet("details/{id}")]
@@ -43,33 +36,34 @@ namespace BLUEY.Controllers
             Usuarios.Add(user);
             return View("Index", Usuarios);
         }
-        [HttpGet("new")]
-        public IActionResult New()
-        {
-            Users user = new Users();
 
-            user.Id = Guid.NewGuid().ToString();
-            user.UserName = "Renato lindo maravilhoso";
-            user.Email = "renatorealsis@gmail.com";
-            user.EmailConfirmed = false;
-            user.NormalizedUserName         = "renatorealsis";
-            user.NormalizedEmail            = "renatorealsis@gmail.com";
-            user.EmailConfirmed             = false;
-            user.PasswordHash               = "r3n4t0321";
-            user.SecurityStamp              = "r3n4t0321";
-            user.ConcurrencyStamp           = "";
-            user.PhoneNumber                = "";
-            user.PhoneNumberConfirmed       = false;
-            user.TwoFactorEnabled           = false;
-            user.LockoutEnd                 = new DateTime().AtNoon();
-            user.LockoutEnabled             = false;
-            user.AccessFailedCount = 0;
+        //[HttpGet("new")]
+        //public IActionResult New()
+        //{
+        //    Users user = new Users();
 
-            var _user = _usersRepository.Set(user);
-            List<Users> Usuarios = new List<Users>();
-            Usuarios.Add(_user);
-            return View("Index", Usuarios);
-        }
+        //    user.Id = Guid.NewGuid().ToString();
+        //    user.UserName = "Renato lindo maravilhoso";
+        //    user.Email = "renatorealsis@gmail.com";
+        //    user.EmailConfirmed = false;
+        //    user.NormalizedUserName         = "renatorealsis";
+        //    user.NormalizedEmail            = "renatorealsis@gmail.com";
+        //    user.EmailConfirmed             = false;
+        //    user.PasswordHash               = "r3n4t0321";
+        //    user.SecurityStamp              = "r3n4t0321";
+        //    user.ConcurrencyStamp           = "";
+        //    user.PhoneNumber                = "";
+        //    user.PhoneNumberConfirmed       = false;
+        //    user.TwoFactorEnabled           = false;
+        //    user.LockoutEnd                 = new DateTime().AtNoon();
+        //    user.LockoutEnabled             = false;
+        //    user.AccessFailedCount = 0;
+
+        //    var _user = _usersRepository.Set(user);
+        //    List<Users> Usuarios = new List<Users>();
+        //    Usuarios.Add(_user);
+        //    return View("Index", Usuarios);
+        //}
 
     }
 }

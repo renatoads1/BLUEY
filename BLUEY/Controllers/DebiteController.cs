@@ -4,6 +4,7 @@ using BLUEY.Models.ViewModels;
 using BLUEY.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BLUEY.Controllers
 {
@@ -12,9 +13,11 @@ namespace BLUEY.Controllers
     {
         private readonly IDebiteRepository _debiteRepository;
         private readonly IDebiteService _debiteService;
+        private readonly IEmpresaRepository _empresaRepository;
 
-        public DebiteController(ILogger<BaseController> logger, IDebiteRepository debiteRepository, IDebiteService debiteService):base(logger)
+        public DebiteController(IEmpresaRepository empresaRepository, ILogger<BaseController> logger, IDebiteRepository debiteRepository, IDebiteService debiteService):base(logger)
         {
+            _empresaRepository = empresaRepository;
             _debiteRepository = debiteRepository;
             _debiteService = debiteService;
         }
@@ -23,10 +26,26 @@ namespace BLUEY.Controllers
         // GET: DebiteController
         public ActionResult Index()
         {
-            List<LCTOFISConsServ> debit = new List<LCTOFISConsServ>();
-            debit = _debiteService.GetDebit();
-            //debit = _debiteRepository.Get();
-            return View(debit);
+            var result = _empresaRepository.GetAllEmpresa();
+            ViewBag.Empresas = result;
+            //var debit = _debiteService.GetDebit();
+            //return View(debit);
+            return View();
+        }
+
+        [HttpPost]
+        [Route("GetDebit")]
+        public ActionResult GetDebit(int empresa, DateTime datain, DateTime dataout)
+        {
+            var result = _empresaRepository.GetAllEmpresa();
+            ViewBag.Empresas = result;
+
+            var emp = empresa.ToString();
+            var din =  datain.ToString("dd.MM.yyyy"); 
+            var dout = dataout.ToString("dd.MM.yyyy");
+
+            var debit = _debiteService.GetDebit(emp, din, dout);
+            return View("Index",debit);
         }
 
         [HttpPost]
@@ -37,7 +56,7 @@ namespace BLUEY.Controllers
             lcto.EMPRESA_ = lctofisconsservviewmodel.EMPRESA_;
             lcto.FILIAL = lctofisconsservviewmodel.FILIAL;
             lcto.COD_PESSOA = lctofisconsservviewmodel.COD_PESSOA;
-            lcto.INSCR_FEDERAL = lctofisconsservviewmodel.COD_PESSOA.ToString();
+            lcto.INSCR_FEDERAL = lctofisconsservviewmodel.INSCR_FEDERAL.ToString();
             lcto.NOME = lctofisconsservviewmodel.NOME;
             lcto.CFOP = lctofisconsservviewmodel.CFOP;
             lcto.TABELA = lctofisconsservviewmodel.TABELA;

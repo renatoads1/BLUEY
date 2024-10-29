@@ -1,5 +1,6 @@
 ﻿using BLUEY.Models;
 using BLUEY.Models.Repositories;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace BLUEY.Services
 {
@@ -22,6 +23,15 @@ namespace BLUEY.Services
                 item.TABELACTBFISLCTOCTB = _tabelactbfislctoctbrepository.GetByEmpCtbfis(item.EMPRESA_,item.TABELA);
             }
             return lctofisconsserv;
+        }
+        public List<LCTOFISConsServ> GetDebit(string empresa, string datain, string dataout) {
+            var lctofisconsserv = _debiteRepository.Get(empresa, datain, dataout);
+            //aqui um lupi para carregar o outro dado
+            foreach (var item in lctofisconsserv)
+            {
+                item.TABELACTBFISLCTOCTB = _tabelactbfislctoctbrepository.GetByEmpCtbfis(item.EMPRESA_, item.TABELA);
+            }
+            return  lctofisconsserv;
         }
 
         public bool setDebitM(LCTOFISConsServ lctofisconsserv)

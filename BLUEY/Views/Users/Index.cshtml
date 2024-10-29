@@ -13,19 +13,21 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var user in Model)
-        {
-            <tr>
-                <td>@user.UserName</td>
-                <td>@user.Email</td>
-                <td>@user.RoleName</td>
-                <td>
-                    <a asp-action="Update" asp-route-id="@user.UserId" class="btn btn-warning">Editar</a>
-                </td>
-                <td>
-                    <a asp-action="Delete" asp-route-id="@user.UserId" class="btn btn-danger">Excluir</a>
-                </td>
-            </tr>
-        }
+
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.UserName</td>
+                    <td>@user.Email</td>
+                    <td>@user.RoleName</td>
+                    <td>
+                        <a asp-action="Update" asp-route-id="@user.UserId" class="btn btn-warning">Editar</a>
+                    </td>
+                    <td>
+                        <a asp-action="Delete" asp-route-id="@user.UserId" class="btn btn-danger">Excluir</a>
+                    </td>
+                </tr>
+            }
+
     </tbody>
 </table>
